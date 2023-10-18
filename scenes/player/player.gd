@@ -1,10 +1,9 @@
 extends Node2D
 
 ## VARIABLES
-var startPos : Vector2
-var startDragPos : Vector2
-var lastDragPos : Vector2
-var dragging = false
+var _dragging : bool
+var _start_pos : Vector2
+var _last_drag_pos : Vector2
 
 ## GODOT CALLBACKS
 func _ready():
@@ -17,37 +16,34 @@ func _process(delta):
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if not dragging and event.pressed:
-			dragging = true
-			onDragStart(event)
+		if not _dragging and event.pressed:
+			_on_drag_start(event)
 			
-		if dragging and not event.pressed:
-			dragging = false
-			OnDragFinish(event)
+		if _dragging and not event.pressed:
+			_on_drag_finish(event)
 
-	if event is InputEventMouseMotion and dragging:
-		onDrag(event)
+	if event is InputEventMouseMotion and _dragging:
+		_on_drag(event)
 
 ## IMPLEMENTATION
-func onDragStart(event):
-	startPos = position
-	startDragPos = event.position;
-	lastDragPos = event.position;
+func _on_drag_start(event) -> void:
+	_dragging = true
+	_start_pos = position
+	_last_drag_pos = event.position;
 	$Visuals.scale = Vector2.ONE * 0.9
 
 
-func onDrag(event):
-	var delta = event.position - lastDragPos
-	var newPosition = position + delta
-	var offset = newPosition - startPos
+func _on_drag(event) -> void:
+	var delta = event.position - _last_drag_pos
+	var new_position = position + delta
+	var offset = new_position - _start_pos
 
-	newPosition = startPos + offset.limit_length(150)
-		
-	position = newPosition
+	position = _start_pos + offset.limit_length(150)
 	
-	lastDragPos = event.position
+	_last_drag_pos = event.position
 
 
-func OnDragFinish(event):
+func _on_drag_finish(event) -> void:
+	_dragging = false
 	$Visuals.scale = Vector2.ONE
 	

@@ -10,4 +10,4 @@ script = ExtResource("1_1ucmg")
 texture = ExtResource("1_bbdj0")
 offset = Vector2(2, 52)
 region_enabled = true
-region_rect = Rect2(2.08165e-12, 2.08165e-12, 200, 380)
+region_rect = Rect2(2.08165e-12, 2.08165e-12, 200, 375.713)
